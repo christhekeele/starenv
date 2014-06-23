@@ -22,6 +22,7 @@ module Starenv
     def call
       Hash[ @file_lookups
         .lazy
+        .map(&method(:require_bundle))
         .map(&method(:expand_file))
         .select(&method(:check_file))
         .map(&method(:load_file))
@@ -40,6 +41,21 @@ module Starenv
           pattern % ENV[lookup]
         elsif File.exist?(lookup)
           lookup
+        end
+      end
+    end
+    
+    def require_bundle(lookup)
+      lookup.tap do |group|
+        if defined?(Bundler) and config.bundle
+          case group
+          when Symbol
+            Bundler.require group
+          when String
+            if ENV[group]
+              Bundler.require ENV[group]
+            end
+          end
         end
       end
     end
