@@ -8,7 +8,13 @@ Gem::Specification.new do |spec|
   spec.version       = Starenv::VERSION
   spec.authors       = ["Chris Keele"]
   spec.email         = ["dev@chriskeele.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
+  spec.summary       = "Manage and permute multiple *.env files."
+  spec.description   = <<-DESC
+    Manage and permute multiple *.env files.
+    
+    Allows you to split up your .env files into more managable chunks, conditionally
+    load them, see where each variable comes from, and provides a .env setup script.
+  DESC
   spec.description   = %q{TODO: Write a longer description. Optional.}
   spec.homepage      = ""
   spec.license       = "MIT"

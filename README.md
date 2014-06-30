@@ -1,6 +1,6 @@
 # Starenv
 
-TODO: Write a gem description
+> **Manage and permute multiple *.env files.**
 
 ## Installation
 
