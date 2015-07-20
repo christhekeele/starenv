@@ -12,16 +12,20 @@ module Starenv
 
       def load
         tap do
-          unless loaded?
-            (hook || default_hook).call self do
-              File.parse(name).environment
-            end
+          load! unless loaded?
+        end
+      end
+
+      def load!
+        tap do
+          @environment = (hook || default_hook).call self do
+            File.parse(name).environment
           end
         end
       end
 
       def loaded?
-        !!file
+        !!@environment
       end
 
     private

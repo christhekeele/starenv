@@ -7,7 +7,7 @@ module Starenv
 
     def initialize(source = nil)
       @source = source ? source : ENV
-      @variables, @applied, @ignored = {}
+      @variables, @applied, @ignored = {}, {}, {}
     end
 
     def [] key
@@ -22,10 +22,18 @@ module Starenv
       end
     end
 
+    def has_key?(key)
+      self[key] and not self[key].to_s.empty?
+    end
+
     def apply(hash)
       self.tap do |env|
         hash.each do |key, value|
-          self[key] ||= value
+          if has_key? key
+            @ignored[key] = value
+          else
+            self[key], @applied[key] = value, value
+          end
         end
       end
     end
