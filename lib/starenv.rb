@@ -93,7 +93,7 @@ private
       end
 
       def format_variable(name, value)
-        format "  %-#{name_length}s => %s\n   %-#{length-1}s => %s", name, value, 'already', ENV[name]
+        format "  %-#{name_length}s => %s (already %s)", name, value, ENV[name]
       end
 
     end
