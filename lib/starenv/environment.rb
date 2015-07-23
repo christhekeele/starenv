@@ -26,16 +26,24 @@ module Starenv
       self[key] and not self[key].to_s.empty?
     end
 
-    def apply(hash)
+    def apply(other)
       self.tap do |env|
-        hash.each do |key, value|
+        other.each do |key, value|
           if has_key? key
-            @ignored[key] = value
+            ignore!(key, value) and other.ignore!(key, value)
           else
-            self[key], @applied[key] = value, value
+            apply!(key, value) and other.apply!(key, value)
           end
         end
       end
+    end
+
+    def ignore!(key, value)
+      @ignored[key] = value
+    end
+
+    def apply!(key, value)
+      self[key], @applied[key] = value, value
     end
 
     def respond_to_missing?(method)

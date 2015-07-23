@@ -15,7 +15,6 @@ module Starenv
       def parse
         tap do
           unless parsed?
-            require 'pry'; binding.pry
             @files = Hash[
               read.split(header).drop(1).each_slice(2).map do |key, value|
                 [ key.to_sym, Parser.new(value.strip.lines).call ]

@@ -1,10 +1,12 @@
 require 'starenv/file'
+require 'starenv/environment'
 
 module Starenv
   class File < ::File
     class Node < Struct.new(:name, :dependencies, :hook)
 
-      attr_reader :environment
+      attr_accessor :loaded
+      attr_reader :environment, :file
 
       def initialize(name, dependencies = [], hook = nil)
         super name, dependencies, hook
@@ -18,20 +20,37 @@ module Starenv
 
       def load!
         tap do
-          @environment = (hook || default_hook).call self do
-            File.parse(name).environment
-          end
+          @file = File.new(name)
+          @environment = Loader.new(self, hook).call
         end
       end
 
       def loaded?
-        !!@environment
+        !!loaded
       end
 
     private
 
-      def default_hook
-        @@default_hook ||= -> file, &loader { loader.call }
+      class Loader < Struct.new(:node, :hook)
+
+        def initialize(node, hook = nil)
+          super node, hook || default_hook
+        end
+
+        def load
+          node.file.parse.environment.tap do
+            node.loaded = true
+          end
+        end
+
+        def call
+          instance_exec node, &hook or Environment.new({})
+        end
+
+        def default_hook
+          @@default_hook ||= -> (node) { load }
+        end
+
       end
 
     end

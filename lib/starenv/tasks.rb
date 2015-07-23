@@ -55,7 +55,7 @@ module Starenv
 
     def init_from(template: :example, noop: false, verbose: true)
       File::Template.touch(template, noop: noop, verbose: verbose).parse.files.each do |file, env|
-        require 'pry'; binding.pry
+        # require 'pry'; binding.pry
       end
     end
 
@@ -78,15 +78,15 @@ module Starenv
     # end
 
     def new_variable(name:, value:, file: Starenv.files.tsort.last || :core)
-      file = EnvFile.new(file, [], pattern, nil)
+      # file = EnvFile.new(file, [], pattern, nil)
     end
 
     def set_variable(name, value:, file: Starenv.files.tsort.last || :core)
-      file = EnvFile.new(file, [], pattern, nil)
+      # file = EnvFile.new(file, [], pattern, nil)
     end
 
     def get_variable(name, value:, file: Starenv.files.tsort.last || :core)
-      file = EnvFile.new(file, [], pattern, nil)
+      # file = EnvFile.new(file, [], pattern, nil)
     end
 
   private
