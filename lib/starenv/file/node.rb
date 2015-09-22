@@ -44,11 +44,11 @@ module Starenv
         end
 
         def call
-          instance_exec node, &hook or Environment.new({})
+          hook.call self or Environment.new({})
         end
 
         def default_hook
-          @@default_hook ||= -> (node) { load }
+          @@default_hook ||= -> (loader) { loader.load }
         end
 
       end
