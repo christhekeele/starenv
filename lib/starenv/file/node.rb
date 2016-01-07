@@ -41,6 +41,8 @@ module Starenv
           node.file.parse.environment.tap do
             node.loaded = true
           end
+        rescue Errno::ENOENT
+          Environment.new
         end
 
         def call
