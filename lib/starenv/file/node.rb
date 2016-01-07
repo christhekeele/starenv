@@ -20,8 +20,12 @@ module Starenv
 
       def load!
         tap do
-          @file = File.new(name)
-          @environment = Loader.new(self, hook).call
+          begin
+            @file = File.new(name)
+            @environment = Loader.new(self, hook).call
+          rescue Errno::ENOENT
+            @environment = Environment.new
+          end
         end
       end
 
@@ -41,8 +45,6 @@ module Starenv
           node.file.parse.environment.tap do
             node.loaded = true
           end
-        rescue Errno::ENOENT
-          Environment.new
         end
 
         def call
